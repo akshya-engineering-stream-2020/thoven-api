@@ -3,7 +3,7 @@ jdk: oraclejdk11
 
 addons:
   sonarcloud:
-    organization: "akshya1997"
+    organization: "akshya-engineering-stream-2020"
     token: $SONARQUBE_TOKEN
 
 script:
