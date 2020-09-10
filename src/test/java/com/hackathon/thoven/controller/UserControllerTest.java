@@ -19,10 +19,10 @@ import java.util.Collections;
 public class UserControllerTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @MockBean
-    UserInfoJpaRepository userInfoJpaRepository;
+    private UserInfoJpaRepository userInfoJpaRepository;
 
     @Test
     public void testing() throws Exception {
