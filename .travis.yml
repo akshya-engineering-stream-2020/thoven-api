@@ -1,6 +1,9 @@
 language: java
 jdk: oraclejdk11
 
+services:
+  - mysql
+
 addons:
   sonarcloud:
     organization: "akshya-engineering-stream-2020"
