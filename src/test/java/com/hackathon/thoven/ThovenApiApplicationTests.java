@@ -1,6 +1,5 @@
 package com.hackathon.thoven;
 
-import com.hackathon.thoven.controller.TestingController;
 import com.hackathon.thoven.controller.UserController;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,18 +15,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ThovenApiApplicationTests {
 
     @Autowired
-    private TestingController controller;
-
-    @Autowired
     private UserController userController;
 
-    @Autowired private DataSource dataSource;
-    @Autowired private JdbcTemplate jdbcTemplate;
-    @Autowired private EntityManager entityManager;
+    @Autowired
+    private DataSource dataSource;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+    @Autowired
+    private EntityManager entityManager;
 
     @Test
     public void contextLoads() throws Exception {
-        assertThat(controller).isNotNull();
         assertThat(userController).isNotNull();
         assertThat(dataSource).isNotNull();
         assertThat(jdbcTemplate).isNotNull();
