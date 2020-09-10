@@ -19,7 +19,7 @@ public class TestingControllerTest {
 
     @Test
     public void testSayHello() throws Exception {
-        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/hello",
+        assertThat(this.restTemplate.getForObject("http://localhost:" + port + "/api/v1/thoven/hello",
                 String.class)).contains("Hello!");
     }
 }
