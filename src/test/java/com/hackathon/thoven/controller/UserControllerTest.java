@@ -16,7 +16,7 @@ import java.util.Collections;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserControllerTest {
+class UserControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -25,7 +25,7 @@ public class UserControllerTest {
     private UserInfoJpaRepository userInfoJpaRepository;
 
     @Test
-    public void testing() throws Exception {
+    void testing() throws Exception {
         Mockito.when(userInfoJpaRepository.findAll()).thenReturn(
                 Collections.emptyList()
         );
