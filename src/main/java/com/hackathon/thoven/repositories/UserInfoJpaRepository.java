@@ -4,7 +4,7 @@ import com.hackathon.thoven.model.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public interface UserInfoJpaRepository extends JpaRepository<UserInfo, Long> {
+public interface UserInfoJpaRepository extends JpaRepository<UserInfo, Integer> {
     public UserDetails findByUserInfoId(String username);
 
     public UserInfo findByFirstName(String username);

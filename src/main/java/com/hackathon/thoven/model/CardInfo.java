@@ -37,4 +37,7 @@ public class CardInfo {
     @ManyToOne
     @JoinColumn(name = "group_info_id")
     private GroupInfo groupInfo;
+
+    @Column(name = "card_short_url")
+    private String cardShortUrl;
 }
