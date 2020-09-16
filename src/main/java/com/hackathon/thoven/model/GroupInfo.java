@@ -20,7 +20,7 @@ public class GroupInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "group_info_id")
-    private Long groupInfoId;
+    private Integer groupInfoId;
 
     @Column(name = "group_name")
     private String groupName;
@@ -28,11 +28,12 @@ public class GroupInfo {
     @Column(name = "group_desp")
     private String groupDesp;
 
-    @ManyToMany(mappedBy = "groupInfos")
-    @JsonIgnore
-    private List<UserInfo> userInfoList = new ArrayList<>();
-
     @OneToMany(mappedBy = "groupInfo")
     @JsonIgnore
     private List<CardInfo> cardInfoList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "groupInfo")
+    @JsonIgnore
+    private List<UserGroupInfo> userGroupInfoList = new ArrayList<>();
+
 }

@@ -7,34 +7,26 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity(name = "card_info")
+@Entity(name = "user_group_info")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class CardInfo {
+public class UserGroupInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "card_info_id")
-    private Integer cardInfoId;
+    @Column(name = "user_group_info_id")
+    private Integer userGroupInfoId;
 
-    @Column(name = "card_title")
-    private String cardTitle;
-
-    @Column(name = "card_desp")
-    private String cardDesp;
-
-    @Column(name = "card_url")
-    private String cardUrl;
-
-    @Column(name = "creator_info_id")
-    private Long creatorInfoId;
-
-    @Column(name = "card_level")
-    private String cardLevel;
+    @ManyToOne
+    @JoinColumn(name = "user_info_id")
+    private UserInfo userInfo;
 
     @ManyToOne
     @JoinColumn(name = "group_info_id")
     private GroupInfo groupInfo;
+
+    private String admin;
+
 }
