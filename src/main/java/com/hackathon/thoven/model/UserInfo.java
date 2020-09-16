@@ -1,5 +1,6 @@
 package com.hackathon.thoven.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_info_id")
-    private Long userInfoId;
+    private Integer userInfoId;
 
     @Column(name = "first_name")
     private String firstName;
@@ -39,10 +40,8 @@ public class UserInfo {
     @Column(name = "feature")
     private String feature;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_groups",
-            joinColumns = @JoinColumn(name = "user_info_id"),
-            inverseJoinColumns = @JoinColumn(name = "group_info_id"))
-    private List<GroupInfo> groupInfos = new ArrayList<>();
+    @OneToMany(mappedBy = "userInfo")
+    @JsonIgnore
+    private List<UserGroupInfo> userGroupInfoList = new ArrayList<>();
+
 }

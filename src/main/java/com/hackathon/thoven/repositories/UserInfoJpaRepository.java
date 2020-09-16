@@ -10,4 +10,6 @@ public interface UserInfoJpaRepository extends JpaRepository<UserInfo, Long> {
     public UserInfo findByFirstName(String username);
 
     public UserInfo findByUsername(String username);
+
+    public UserInfo getByUsername(String username);
 }
