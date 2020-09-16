@@ -1,5 +1,6 @@
 package com.hackathon.thoven.controller;
 
+import com.hackathon.thoven.exception.InvalidUrlException;
 import com.hackathon.thoven.model.CardInfo;
 import com.hackathon.thoven.repositories.CardInfoJpaRepository;
 import com.hackathon.thoven.repositories.GroupInfoJpaRepository;
@@ -42,7 +43,7 @@ public class URLShortenerController {
                 cardInfoJpaRepository.saveAndFlush(cardInfo);
                 return baseUrl + cardInfo.getGroupInfo().getGroupName() + "/" + cardInfo.getCardLevel() + "/" + shortUrlId;
             } else {
-                throw new Exception("Url is not valid");
+                throw new InvalidUrlException("Url is invalid");
             }
         } else {
             return cardInfo.getCardShortUrl();
