@@ -104,6 +104,40 @@ public class ThovenController {
         return groupInfoList;
     }
 
+    @PostMapping("/user-groups-admin-details")
+    public List<UserGroupInfo> getAllGroupsAdminDetailsOfUser(@RequestBody UserInfo userInfo) {
+        return userGroupInfoJpaRepository.findAllByUserInfo(userInfo);
+    }
+
+    @PostMapping("/count-cards")
+    public Integer getCountOfCardsOfGroup(@RequestBody GroupInfo groupInfo) {
+        return cardInfoJpaRepository.countAllByGroupInfo(groupInfo);
+    }
+
+    @PostMapping("/count-members")
+    public Integer getCountOfMembersOfGroup(@RequestBody GroupInfo groupInfo) {
+        return userGroupInfoJpaRepository.countAllByGroupInfo(groupInfo);
+    }
+
+    @PostMapping("/group-cards")
+    public List<CardInfo> getCardsOfGroup(@RequestBody GroupInfo groupInfo) {
+        return cardInfoJpaRepository.findAllByGroupInfo(groupInfo);
+    }
+
+    @PostMapping("/group-members")
+    public List<UserGroupInfo> getUsersOfGroup(@RequestBody GroupInfo groupInfo) {
+        return userGroupInfoJpaRepository.findAllByGroupInfo(groupInfo);
+    }
+
+    @PostMapping("/create-group")
+    public GroupInfo createGroup(@RequestBody GroupInfo groupInfo) {
+        return groupInfoJpaRepository.saveAndFlush(groupInfo);
+    }
+
+    @PostMapping("/create-user-groups")
+    public UserGroupInfo createUserGroups(@RequestBody UserGroupInfo userGroupInfo) {
+        return userGroupInfoJpaRepository.saveAndFlush(userGroupInfo);
+    }
 
     @PostMapping("/authenticate")
     public String generateToken(@RequestBody AuthRequest authRequest) throws Exception {
@@ -117,4 +151,5 @@ public class ThovenController {
 
         return jwtUtil.generateToken(authRequest.getUserName());
     }
+
 }
