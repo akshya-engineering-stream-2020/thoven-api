@@ -140,26 +140,26 @@ public class ThovenController {
         return userGroupInfoJpaRepository.saveAndFlush(userGroupInfo);
     }
 
-    @RequestMapping(value = "/delete-card/{cardId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/delete-card/{cardId}")
     public void deleteCardByCardId(@PathVariable Integer cardId) {
         cardInfoJpaRepository.deleteById(cardId);
     }
 
-    @RequestMapping(value = "/update-card/{cardId}", method = RequestMethod.PUT)
+    @PutMapping("/update-card/{cardId}")
     public CardInfo updateCardByCardId(@PathVariable Integer cardId, @RequestBody CardInfo cardInfo) {
         CardInfo existingCardInfo = cardInfoJpaRepository.getOne(cardId);
         BeanUtils.copyProperties(cardInfo, existingCardInfo, "card_info_id");
         return cardInfoJpaRepository.saveAndFlush(existingCardInfo);
     }
 
-    @RequestMapping(value = "/update-user-group/{userGroupId}", method = RequestMethod.PUT)
+    @PutMapping("/update-user-group/{userGroupId}")
     public UserGroupInfo updateUserGroupByUserGroupId(@PathVariable Integer userGroupId, @RequestBody UserGroupInfo userGroupInfo) {
         UserGroupInfo existingUserGroupInfo = userGroupInfoJpaRepository.getOne(userGroupId);
         BeanUtils.copyProperties(userGroupInfo, existingUserGroupInfo, "user_group_info_id");
         return userGroupInfoJpaRepository.saveAndFlush(existingUserGroupInfo);
     }
 
-    @RequestMapping(value = "/delete-user-group/{userGroupId}", method = RequestMethod.DELETE)
+    @DeleteMapping("/delete-user-group/{userGroupId}")
     public void deleteUserGroupByUserGroupId(@PathVariable Integer userGroupId) {
         userGroupInfoJpaRepository.deleteById(userGroupId);
     }
