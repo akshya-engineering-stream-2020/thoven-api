@@ -46,7 +46,7 @@ public class URLShortenerController {
                 throw new InvalidUrlException("Url is invalid");
             }
         } else {
-            return cardInfo.getCardShortUrl();
+            return baseUrl + cardInfo.getGroupInfo().getGroupName() + "/" + cardInfo.getCardLevel() + "/" + cardInfo.getCardShortUrl();
         }
     }
 
