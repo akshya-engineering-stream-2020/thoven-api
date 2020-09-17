@@ -20,7 +20,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(
@@ -71,14 +72,13 @@ public class ThovenControllerTest {
     public void getAllCards() {
         GroupInfo groupInfo = setGroupInfo(1, "groupName", "groupDesp");
         List<CardInfo> expectedCardInfoList = new ArrayList<>();
-        expectedCardInfoList.add(setCardInfo(1, "cardTitle", "cardDesp", "cardUrl", 1l, "cardLeve",
+        expectedCardInfoList.add(setCardInfo(1, "cardTitle", "cardDesp", "cardUrl", 1l, "cardLevel",
                 groupInfo));
 
         Mockito.doReturn(expectedCardInfoList).when(cardInfoJpaRepository).findAll();
 
         List<CardInfo> actualCardInfoList = thovenController.getAllCards();
         assertFalse(actualCardInfoList.isEmpty());
-
     }
 
     @Test
@@ -93,6 +93,162 @@ public class ThovenControllerTest {
 
         List<UserGroupInfo> actualUserGroupInfoList = thovenController.getAllUserGroups();
         assertFalse(actualUserGroupInfoList.isEmpty());
+    }
+
+    @Test
+    public void getUserInfoByUsername() {
+        UserInfo expectedUserInfo = setUserInfo(1, "firstName", "lastName", "username", "email.com",
+                "password", "tribe", "feature");
+        Mockito.doReturn(expectedUserInfo).when(userInfoJpaRepository).findByUsername(anyString());
+
+        UserInfo actualUserInfo = thovenController.getUserInfoByUsername("username");
+        assertTrue(actualUserInfo.getUsername().equalsIgnoreCase("username"));
+    }
+
+    @Test
+    public void getGroupByGroupName() {
+        GroupInfo expectedGroupInfo = setGroupInfo(1, "groupName", "groupDesp");
+
+        Mockito.doReturn(expectedGroupInfo).when(groupInfoJpaRepository).getByGroupName(anyString());
+
+        GroupInfo actualGroupInfo = thovenController.getGroupByGroupName("groupname");
+        assertTrue(actualGroupInfo.getGroupName().equalsIgnoreCase("groupname"));
+    }
+
+    @Test
+    public void getAllCardsOfUser() {
+        UserInfo userInfo = setUserInfo(1, "firstName", "lastName", "username", "email.com",
+                "password", "tribe", "feature");
+        GroupInfo groupInfo = setGroupInfo(1, "groupName", "groupDesp");
+        List<UserGroupInfo> expectedUserGroupInfoList = new ArrayList<>();
+        expectedUserGroupInfoList.add(setUserGroupInfo(1, userInfo, groupInfo, "yes"));
+        List<CardInfo> expectedCardInfoList = new ArrayList<>();
+        expectedCardInfoList.add(setCardInfo(1, "cardTitle", "cardDesp", "cardUrl", 1l, "cardLevel",
+                groupInfo));
+
+        Mockito.doReturn(expectedUserGroupInfoList).when(userGroupInfoJpaRepository).findAllByUserInfo(any());
+        Mockito.doReturn(expectedCardInfoList).when(cardInfoJpaRepository).findAllByGroupInfo(any());
+
+        UserInfo actualUserInfo = setUserInfo(1, "firstName", "lastName", "username", "email.com",
+                "password", "tribe", "feature");
+        List<CardInfo> actualCardList = thovenController.getAllCardsOfUser(actualUserInfo);
+        assertFalse(actualCardList.isEmpty());
+    }
+
+    @Test
+    public void getAllGroupsOfUser() {
+        UserInfo userInfo = setUserInfo(1, "firstName", "lastName", "username", "email.com",
+                "password", "tribe", "feature");
+        GroupInfo groupInfo = setGroupInfo(1, "groupName", "groupDesp");
+        List<UserGroupInfo> expectedUserGroupInfoList = new ArrayList<>();
+        expectedUserGroupInfoList.add(setUserGroupInfo(1, userInfo, groupInfo, "yes"));
+
+        Mockito.doReturn(expectedUserGroupInfoList).when(userGroupInfoJpaRepository).findAllByUserInfo(any());
+
+        UserInfo actualUserInfo = setUserInfo(1, "firstName", "lastName", "username", "email.com",
+                "password", "tribe", "feature");
+        List<GroupInfo> actualGroupList = thovenController.getAllGroupsOfUser(actualUserInfo);
+        assertFalse(actualGroupList.isEmpty());
+    }
+
+    @Test
+    public void getAllGroupsAdminDetailsOfUser() {
+        UserInfo userInfo = setUserInfo(1, "firstName", "lastName", "username", "email.com",
+                "password", "tribe", "feature");
+        GroupInfo groupInfo = setGroupInfo(1, "groupName", "groupDesp");
+        List<UserGroupInfo> expectedUserGroupInfoList = new ArrayList<>();
+        expectedUserGroupInfoList.add(setUserGroupInfo(1, userInfo, groupInfo, "yes"));
+
+        Mockito.doReturn(expectedUserGroupInfoList).when(userGroupInfoJpaRepository).findAllByUserInfo(any());
+
+        UserInfo actualUserInfo = setUserInfo(1, "firstName", "lastName", "username", "email.com",
+                "password", "tribe", "feature");
+        List<UserGroupInfo> actualUserGroupList = thovenController.getAllGroupsAdminDetailsOfUser(actualUserInfo);
+        assertFalse(actualUserGroupList.isEmpty());
+    }
+
+    @Test
+    public void getCountOfCardsOfGroup() {
+        Mockito.doReturn(10).when(cardInfoJpaRepository).countAllByGroupInfo(any());
+
+        GroupInfo groupInfo = setGroupInfo(1, "groupName", "groupDesp");
+        assertEquals((int) thovenController.getCountOfCardsOfGroup(groupInfo), 10);
+    }
+
+    @Test
+    public void getCountOfMembersOfGroup() {
+        Mockito.doReturn(10).when(userGroupInfoJpaRepository).countAllByGroupInfo(any());
+
+        GroupInfo groupInfo = setGroupInfo(1, "groupName", "groupDesp");
+        assertEquals((int) thovenController.getCountOfMembersOfGroup(groupInfo), 10);
+    }
+
+    @Test
+    public void getCardsOfGroup() {
+        GroupInfo groupInfo = setGroupInfo(1, "groupName", "groupDesp");
+        List<CardInfo> expectedCardInfoList = new ArrayList<>();
+        expectedCardInfoList.add(setCardInfo(1, "cardTitle", "cardDesp", "cardUrl", 1l, "cardLevel",
+                groupInfo));
+
+        Mockito.doReturn(expectedCardInfoList).when(cardInfoJpaRepository).findAllByGroupInfo(any());
+
+        GroupInfo actualGroupInfo = setGroupInfo(1, "groupName", "groupDesp");
+        List<CardInfo> actualCardInfoList = thovenController.getCardsOfGroup(actualGroupInfo);
+        assertFalse(actualCardInfoList.isEmpty());
+    }
+
+    @Test
+    public void getUsersOfGroup() {
+        UserInfo userInfo = setUserInfo(1, "firstName", "lastName", "username", "email.com",
+                "password", "tribe", "feature");
+        GroupInfo groupInfo = setGroupInfo(1, "groupName", "groupDesp");
+        List<UserGroupInfo> expectedUserGroupInfoList = new ArrayList<>();
+        expectedUserGroupInfoList.add(setUserGroupInfo(1, userInfo, groupInfo, "yes"));
+
+        Mockito.doReturn(expectedUserGroupInfoList).when(userGroupInfoJpaRepository).findAllByGroupInfo(any());
+
+        GroupInfo actualGroupInfo = setGroupInfo(1, "groupName", "groupDesp");
+        List<UserGroupInfo> actualUserGroupInfoList = thovenController.getUsersOfGroup(actualGroupInfo);
+        assertFalse(actualUserGroupInfoList.isEmpty());
+    }
+
+    @Test
+    public void createGroup() {
+        GroupInfo expectedGroupInfo = setGroupInfo(1, "groupName", "groupDesp");
+
+        Mockito.doReturn(expectedGroupInfo).when(groupInfoJpaRepository).saveAndFlush(any());
+
+        GroupInfo groupInfo = setGroupInfo(1, "groupName", "groupDesp");
+        GroupInfo actualGroupInfo = thovenController.createGroup(groupInfo);
+        assertTrue(actualGroupInfo.getGroupName().equalsIgnoreCase("groupName"));
+    }
+
+    @Test
+    public void createUserGroups() {
+        UserInfo userInfo = setUserInfo(1, "firstName", "lastName", "username", "email.com",
+                "password", "tribe", "feature");
+        GroupInfo groupInfo = setGroupInfo(1, "groupName", "groupDesp");
+        UserGroupInfo expectedUserGroupInfo = setUserGroupInfo(1, userInfo, groupInfo, "yes");
+
+        Mockito.doReturn(expectedUserGroupInfo).when(userGroupInfoJpaRepository).saveAndFlush(any());
+
+        UserGroupInfo userGroupInfo = setUserGroupInfo(1, userInfo, groupInfo, "yes");
+        UserGroupInfo actualUserGroupInfo = thovenController.createUserGroups(userGroupInfo);
+        assertTrue(actualUserGroupInfo.getUserInfo().getUsername().equalsIgnoreCase("username"));
+    }
+
+    @Test
+    public void deleteCardByCardId() {
+        Mockito.doNothing().when(cardInfoJpaRepository).deleteById(anyInt());
+        thovenController.deleteCardByCardId(2);
+        Mockito.verify(cardInfoJpaRepository).deleteById(2);
+    }
+
+    @Test
+    public void deleteUserGroupByUserGroupId() {
+        Mockito.doNothing().when(userGroupInfoJpaRepository).deleteById(anyInt());
+        thovenController.deleteUserGroupByUserGroupId(2);
+        Mockito.verify(userGroupInfoJpaRepository).deleteById(2);
     }
 
     private UserInfo setUserInfo(Integer userInfoId, String firstName, String lastName, String username, String email,
