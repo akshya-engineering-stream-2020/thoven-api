@@ -31,7 +31,7 @@ public class URLShortenerController {
     public String generateShortUrl(@PathVariable("cardID") Integer cardId, @RequestBody String word) throws Exception {
         UrlValidator urlValidator = new UrlValidator();
         String urlId = null;
-        String baseUrl = "http://localhost:8888/thoven/";
+        String baseUrl = "https://thoven-api.herokuapp.com/thoven/";
 
         CardInfo cardInfo = cardInfoJpaRepository.getOne(cardId);
         if (cardInfo.getCardShortUrl() == null) {
