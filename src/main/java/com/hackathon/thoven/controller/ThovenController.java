@@ -1,11 +1,13 @@
 package com.hackathon.thoven.controller;
 
+import com.hackathon.thoven.exception.InvalidUrlException;
 import com.hackathon.thoven.model.*;
 import com.hackathon.thoven.repositories.CardInfoJpaRepository;
 import com.hackathon.thoven.repositories.GroupInfoJpaRepository;
 import com.hackathon.thoven.repositories.UserGroupInfoJpaRepository;
 import com.hackathon.thoven.repositories.UserInfoJpaRepository;
 import com.hackathon.thoven.utils.JwtUtil;
+import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -69,8 +71,14 @@ public class ThovenController {
     }
 
     @PostMapping("/create-card")
-    public CardInfo createCard(@RequestBody CardInfo cardInfo) {
-        return cardInfoJpaRepository.saveAndFlush(cardInfo);
+    public CardInfo createCard(@RequestBody CardInfo cardInfo) throws InvalidUrlException {
+        UrlValidator urlValidator = new UrlValidator();
+        if (urlValidator.isValid(cardInfo.getCardUrl())) {
+            return cardInfoJpaRepository.saveAndFlush(cardInfo);
+        } else {
+            throw new InvalidUrlException("Url is invalid");
+        }
+
     }
 
     @PostMapping("/user-cards")
