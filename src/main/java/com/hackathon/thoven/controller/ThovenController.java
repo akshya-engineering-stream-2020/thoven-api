@@ -6,6 +6,7 @@ import com.hackathon.thoven.repositories.GroupInfoJpaRepository;
 import com.hackathon.thoven.repositories.UserGroupInfoJpaRepository;
 import com.hackathon.thoven.repositories.UserInfoJpaRepository;
 import com.hackathon.thoven.utils.JwtUtil;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -137,6 +138,30 @@ public class ThovenController {
     @PostMapping("/create-user-groups")
     public UserGroupInfo createUserGroups(@RequestBody UserGroupInfo userGroupInfo) {
         return userGroupInfoJpaRepository.saveAndFlush(userGroupInfo);
+    }
+
+    @DeleteMapping("/delete-card/{cardId}")
+    public void deleteCardByCardId(@PathVariable Integer cardId) {
+        cardInfoJpaRepository.deleteById(cardId);
+    }
+
+    @PutMapping("/update-card/{cardId}")
+    public CardInfo updateCardByCardId(@PathVariable Integer cardId, @RequestBody CardInfo cardInfo) {
+        CardInfo existingCardInfo = cardInfoJpaRepository.getOne(cardId);
+        BeanUtils.copyProperties(cardInfo, existingCardInfo, "card_info_id");
+        return cardInfoJpaRepository.saveAndFlush(existingCardInfo);
+    }
+
+    @PutMapping("/update-user-group/{userGroupId}")
+    public UserGroupInfo updateUserGroupByUserGroupId(@PathVariable Integer userGroupId, @RequestBody UserGroupInfo userGroupInfo) {
+        UserGroupInfo existingUserGroupInfo = userGroupInfoJpaRepository.getOne(userGroupId);
+        BeanUtils.copyProperties(userGroupInfo, existingUserGroupInfo, "user_group_info_id");
+        return userGroupInfoJpaRepository.saveAndFlush(existingUserGroupInfo);
+    }
+
+    @DeleteMapping("/delete-user-group/{userGroupId}")
+    public void deleteUserGroupByUserGroupId(@PathVariable Integer userGroupId) {
+        userGroupInfoJpaRepository.deleteById(userGroupId);
     }
 
     @PostMapping("/authenticate")
